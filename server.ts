@@ -61,7 +61,7 @@ const rootQuery = new GraphQLObjectType({
         company: { type: GraphQLString },
         country: { type: GraphQLString },
       },
-      resolve: async (parent, args) => {
+      resolve: async (_parent, args) => {
         const users = await User.find({
           name: RegExp(args.name, "ig"),
           "company.title": RegExp(args.company, "ig"),
@@ -74,13 +74,11 @@ const rootQuery = new GraphQLObjectType({
       type: GraphQlUserType,
       args: {
         id: { type: GraphQLString },
-        index: { type: GraphQLInt },
       },
-      resolve: async (parent, args) => {
-        const id = new Types.ObjectId(args.id);
-        const user = await User.findOne({
-          $or: [{ _id: id }, { index: args.index }],
-        });
+      resolve: async (_parent, args) => {
+        const id = Types.ObjectId.createFromHexString(args.id);
+
+        const user = await User.findById(id);
 
         return user;
       },
