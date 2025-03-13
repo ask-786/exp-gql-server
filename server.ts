@@ -3,6 +3,7 @@ import { connectDb } from "./config/db";
 import { createHandler } from "graphql-http/lib/use/express";
 import { User } from "./model/users";
 import { Types } from "mongoose";
+import cors from "cors";
 import {
   GraphQLBoolean,
   GraphQLInt,
@@ -13,6 +14,8 @@ import {
 } from "graphql";
 
 const app = express();
+
+app.use(cors());
 
 connectDb();
 
